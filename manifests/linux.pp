@@ -1,0 +1,116 @@
+# == Class: profiles Linux
+class profiles::linux (
+  $pool           = 'default',
+  $security_level = 'basic',
+  $repo_base      = '0_CONF_REPOSITORY',
+) {
+
+  #######################
+  ## Users
+  class { '::profiles::linux::users': }
+  
+  #######################
+  #> puppet linux module: mtulio/linux
+  ##> Require: puppet module install mtulio-linux
+
+  ###> Config linux->HOSTS
+  class { '::linux::base::hosts' : }
+
+  ###> Config linux->MOTD
+  class { '::linux::base::motd' :
+      template => "${repo_base}/motd/pool_${pool}/motd.erb",
+  }
+
+  ###> Config linux->NTPDATE
+  class { '::linux::base::ntpdate' :
+    ntpserver => 'a.ntp.br',
+  }
+
+  ###> Config linux->RESOLV.CONF
+  if $repo_base != undef {
+    class { '::linux::base::resolv_conf' :
+      template     => "${repo_base}/resolv_conf/resolv.conf.erb",
+    }
+  }
+  else {
+    class { '::linux::base::resolv_conf' :
+      nameservers => ['10.0.2.3','8.8.8.8','201.67.222.222'],
+      domainname  => $::domain,
+    }
+  }
+
+  ###> Config linux->TIMEZONE
+  class { '::linux::base::timezone' :
+    timezone => 'America/Sao_Paulo',
+  }
+  
+  ###> Config linux->SUDOERS
+  class { '::linux::base::sudoers' :
+    template => "${repo_base}/sudoers/sudoers",
+  }
+
+  ### linux_Security
+  if $security_level == 'basic' {
+    notice('Disable all security options')
+    #include profiles::linux::sec_basic
+    # disable selinux
+    # disable iptables
+
+    ###> Config linux->SELINUX
+    class {'::linux::security::selinux' :
+      mode => permissive,
+    }
+
+  }
+  elsif $security_level == 'high' {
+    notify('Enable all security options')
+    #include profiles::linux::sec_high
+    # enable selinux
+    # enable iptables
+    # enable audit
+    
+    ###> Config linux->SELINUX
+    class {'::linux::security::selinux' :
+      mode => enforced,
+    }
+  }
+  else {
+    ###> Config linux->SELINUX
+    class {'::linux::security::selinux' :
+      mode => disabled,
+    }
+  }
+
+  #######################
+  #> Module: zabbix
+  #opt_use_template => "${repo_base}/zabbix/etc/zabbix/zabbix_agentd.conf.erb",
+  class {'::zabbix::agent':
+    opt_use_template => 'yes',
+    server           => 'zabbix.local',
+    listen_ip        => $::ipaddress,
+    listen_port      => '10050',
+    start_agents     => '2',
+  }
+
+  #######################
+  #> Module: ssh
+  ## Test 1
+  #class { '::ssh::sshd_config':  }
+  
+  ## Test 2
+  #class { '::ssh::sshd_config':
+  #  permitrootlogin   => 'yes',
+  #  allow_users       => 'root prod',
+  #}
+  # SSHd_config class - Test 3: Ensure Local User, block root login
+
+  ## Test 3
+  class { '::ssh::sshd_config':
+    user_local_enable => 'yes',
+    user_name_ensure  => 'lmtulio',
+    user_password     => '$6$GpTlgkVr$CHLWoyzd4fGD/c4eG2A5JnR8HvsrUF0sGnHrpumysSsJRW5laOfMrvuYX3qjlLriQXGQVHqLq8UIpOxe9Wz2C1', # admin@123
+    permitrootlogin   => 'yes',
+    allow_users       => 'root ltulio',
+  }
+}
+
