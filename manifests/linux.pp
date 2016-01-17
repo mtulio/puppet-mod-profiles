@@ -1,9 +1,13 @@
 # == Class: profiles Linux
 class profiles::linux (
-  $pool           = 'default',
   $security_level = 'basic',
-  $repo_base      = '0_CONF_REPOSITORY',
-) {
+  $gb_repo_base   = $gb_repo_base,
+  $gb_pool        = $gb_pool,
+) inherits profiles {
+
+  if $gb_repo_base == undef or $gb_pool == undef {
+    $default_config = 'yes'
+  }
 
   #######################
   ## Users
@@ -17,8 +21,13 @@ class profiles::linux (
   class { '::linux::base::hosts' : }
 
   ###> Config linux->MOTD
-  class { '::linux::base::motd' :
-      template => "${repo_base}/motd/pool_${pool}/motd.erb",
+  if $default_config == 'yes' {
+    class { '::linux::base::motd' : }
+  }
+  else {
+    class { '::linux::base::motd' :
+        template => "${gb_repo_base}/motd/pool_${gb_pool}/motd.erb",
+    }
   }
 
   ###> Config linux->NTPDATE
@@ -27,15 +36,15 @@ class profiles::linux (
   }
 
   ###> Config linux->RESOLV.CONF
-  if $repo_base != undef {
+  if $default_config == 'yes' {
     class { '::linux::base::resolv_conf' :
-      template     => "${repo_base}/resolv_conf/resolv.conf.erb",
+      nameservers => ['10.0.2.3','8.8.8.8','201.67.222.222'],
+      domainname  => $::domain,
     }
   }
   else {
     class { '::linux::base::resolv_conf' :
-      nameservers => ['10.0.2.3','8.8.8.8','201.67.222.222'],
-      domainname  => $::domain,
+      template     => "${gb_repo_base}/resolv_conf/resolv.conf.erb",
     }
   }
 
@@ -45,51 +54,46 @@ class profiles::linux (
   }
   
   ###> Config linux->SUDOERS
-  class { '::linux::base::sudoers' :
-    template => "${repo_base}/sudoers/sudoers",
+  if $default_config == 'yes' {
+    class { '::linux::base::sudoers' : }
+
+  } else {
+    class { '::linux::base::sudoers' :
+      template => "${gb_repo_base}/sudoers/sudoers",
+    }
   }
 
   ### linux_Security
-  if $security_level == 'basic' {
-    notice('Disable all security options')
-    #include profiles::linux::sec_basic
-    # disable selinux
-    # disable iptables
+  case $security_level {
+    'basic': {
+      notice('Disable all security options')
+      #include profiles::linux::sec_basic
+      #> disable selinux
+      #> disable iptables
 
-    ###> Config linux->SELINUX
-    class {'::linux::security::selinux' :
-      mode => permissive,
+      ###> Config linux->SELINUX
+      class {'::linux::security::selinux' :
+        mode => permissive,
+      }
     }
-
-  }
-  elsif $security_level == 'high' {
-    notify('Enable all security options')
-    #include profiles::linux::sec_high
-    # enable selinux
-    # enable iptables
-    # enable audit
+    'high' : {
+      notify('Enable all security options')
+      #include profiles::linux::sec_high
+      #> enable selinux
+      #> enable iptables
+      #> enable audit
     
-    ###> Config linux->SELINUX
-    class {'::linux::security::selinux' :
-      mode => enforced,
+      ###> Config linux->SELINUX
+      class {'::linux::security::selinux' :
+        mode => enforced,
+      }
     }
-  }
-  else {
-    ###> Config linux->SELINUX
-    class {'::linux::security::selinux' :
-      mode => disabled,
+    default : {
+      ###> Config linux->SELINUX
+      class {'::linux::security::selinux' :
+        mode => disabled,
+      }
     }
-  }
-
-  #######################
-  #> Module: zabbix
-  #opt_use_template => "${repo_base}/zabbix/etc/zabbix/zabbix_agentd.conf.erb",
-  class {'::zabbix::agent':
-    opt_use_template => 'yes',
-    server           => 'zabbix.local',
-    listen_ip        => $::ipaddress,
-    listen_port      => '10050',
-    start_agents     => '2',
   }
 
   #######################

@@ -5,10 +5,9 @@
 1. [Overview](#overview)
 2. [Profiles](#profiles)
     * [Linux](#linux)
-    * [Linux](#linux)
-3. [Usage](#usage)
-4. [Limitations](#limitations)
-5. [Development](#development)
+    * [NMS - Network Management Systems](#nms)
+3. [Limitations](#limitations)
+4. [Development](#development)
 
 ## Overview
 
@@ -17,6 +16,7 @@ Module to manage the puppet 'abstraction layer'. Here you can define profiles fo
 ## Profiles
 
 * Linux
+* NMS/Zabbix
 * Webserver/Nginx [soon]
 * Webserver/APACHE [soon]
 
@@ -27,6 +27,15 @@ Module to manage the puppet 'abstraction layer'. Here you can define profiles fo
 #### Dependencies
 #### Files
 #### Usage
+
+### NMS
+
+#### Zabbix Agent
+
+##### Description
+##### Dependencies
+##### Files
+##### Usage
 
 
 ## Limitations

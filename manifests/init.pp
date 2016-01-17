@@ -1,40 +1,21 @@
-# == Class: profiles
 #
-# Full description of class profiles here.
+# == Class: PROFILES
 #
-# === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the function of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
+# Manage 'abstraction layer' class of puppet
 #
 # === Examples
 #
-#  class { 'profiles':
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
-#  }
+#  See test/ directory or Usage documentation.
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Marco Túlio R Braga <git@mtulio.eng.br>
 #
 # === Copyright
 #
-# Copyright 2016 Your name here, unless otherwise noted.
+# Copyright 2016 Marco Tulio R Braga.
 #
-class profiles {
-
-}
+class profiles (
+  $gb_pool      = undef,
+  $gb_repo_base = undef,
+) { }
