@@ -77,7 +77,7 @@ class profiles::linux (
       }
     }
     'high' : {
-      notify('Enable all security options')
+      notice('Enable all security options')
       #include profiles::linux::sec_high
       #> enable selinux
       #> enable iptables
@@ -85,7 +85,7 @@ class profiles::linux (
     
       ###> Config linux->SELINUX
       class {'::linux::security::selinux' :
-        mode => enforced,
+        mode => enforcing,
       }
     }
     default : {

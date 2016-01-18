@@ -26,7 +26,7 @@ Module to manage the puppet 'abstraction layer'. Here you can define profiles fo
 
 #### Description
 
- Profile Linux configure Linux system using module 'mtulio-linux'
+ Profile to configure Linux system using module 'mtulio-linux'
 
 #### Dependencies
 
