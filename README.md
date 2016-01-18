@@ -1,11 +1,11 @@
-# Linux
+# profiles
 
 #### Table of Contents
 
 1. [Overview](#1-overview)
 2. [Profiles](#2-profiles)
-    * [Linux](#linux)
-	* [NMS - Network Management Systems](#2-2-nms)
+    * [Linux](#21-linux)
+	* [NMS - Network Management Systems](#22-nms)
 3. [Limitations](#3-limitations)
 4. [Development](#4-development)
 5. [Release Notes](#5-release-notes)
