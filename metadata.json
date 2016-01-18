@@ -7,8 +7,34 @@
   "source": "https://github.com/mtulio/puppet-mod-profiles",
   "project_page": "https://github.com/mtulio/puppet-mod-profiles",
   "issues_url": "https://github.com/mtulio/puppet-mod-profiles/issues",
+  "tags": ["linux","profiles","abstraction","layer","ssh","zabbix"],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 3.0.0 < 5.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    }
+  ],
+  "description": "Module to manage the puppet 'implementation layer'.",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
+    {"name":"mtulio-linux","version_requirement":">= 1.0.0"},
+    {"name":"mtulio-ssh","version_requirement":">= 1.0.0"},
+    {"name":"mtulio-zabbix","version_requirement":">= 1.0.0"}
   ]
 }
-
