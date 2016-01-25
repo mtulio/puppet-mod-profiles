@@ -24,7 +24,10 @@ class profiles::linux (
   $gb_sshd_usr_name_ens = $profiles::params::gb_sshd_usr_name_ens,
   $gb_sshd_usr_password = $profiles::params::gb_sshd_usr_password,
   $gb_sshd_perm_root_lg = $profiles::params::gb_sshd_perm_root_lg,
+  $gb_sshd_deny_users   = $profiles::params::gb_sshd_deny_users,
   $gb_sshd_allow_users  = $profiles::params::gb_sshd_allow_users,
+  $gb_sshd_allow_groups = $profiles::params::gb_sshd_allow_groups,
+  $gb_sshd_deny_groups  = $profiles::params::gb_sshd_deny_groups,
   $gb_sshd_bannerpath   = $profiles::params::gb_sshd_bannerpath,
 ) inherits profiles::params {
 

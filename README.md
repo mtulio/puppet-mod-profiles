@@ -125,6 +125,9 @@ See project page at https://github.com/mtulio/puppet-mod-profiles
 
 ## 5. Release Notes
 
+[1.1.1] 
+* Fix Warnings
+
 [1.1.0] <--
 * Review code layout of Linux profile
 * Create a class to manage users [add/remove]
