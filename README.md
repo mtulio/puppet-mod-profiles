@@ -4,8 +4,9 @@
 
 1. [Overview](#1-overview)
 2. [Profiles](#2-profiles)
-    * [Linux](#21-linux)
-	* [NMS - Network Management Systems](#22-nms)
+     * [Linux](#21-linux)
+     * [NMS - Network Management Systems](#22-nms)
+     * [Security](#23-security)
 3. [Limitations](#3-limitations)
 4. [Development](#4-development)
 5. [Release Notes](#5-release-notes)
@@ -82,6 +83,35 @@ See [module description](https://forge.puppetlabs.com/mtulio/zabbix)
  class { 'profiles::nms::zabbix_agent' : }
 ```
 
+### 2.3 Security
+
+#### 2.3.1 DNS Sec
+
+##### Description
+
+ Profile to configure DNS server on a Linux System
+
+##### Dependencies
+
+ Module ['DNSsec'](https://forge.puppetlabs.com/mtulio/dnssec)
+
+##### Files
+
+ See [module description](https://forge.puppetlabs.com/mtulio/dnssec)
+
+##### Usage
+
+* Configure DNS server (BIND9) using DNSsec. Script will sign all zones under directory /var/named/chroot/var/named/master/zones/ with prefix 'db.'. Remember to keep keys on sub directory 'keys/':
+
+```
+include profiles
+class {'profiles::security::dns':
+  server_type    => 'master',
+  dnssec_enabled => 'yes',
+}
+```
+
+
 ## 3. Limitations
 
 OS compatibility: 
@@ -94,6 +124,11 @@ We're working to support more OS.
 See project page at https://github.com/mtulio/puppet-mod-profiles
 
 ## 5. Release Notes
+
+[1.1.0] <--
+* Review code layout of Linux profile
+* Create a class to manage users [add/remove]
+* Add DNS profiles [security/dns]
 
 [1.0.0]
 * Add Profile Linux [base and sshd configuration]

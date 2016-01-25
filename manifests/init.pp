@@ -18,4 +18,4 @@
 class profiles (
   $gb_pool      = undef,
   $gb_repo_base = undef,
-) { }
+) inherits profiles::params { }
