@@ -1,5 +1,9 @@
 # profiles
 
+[![Puppet Forge](http://img.shields.io/puppetforge/v/mtulio/profiles.svg)](https://forge.puppetlabs.com/mtulio/profiles)
+[![Build Status](https://travis-ci.org/mtulio/puppet-mod-profiles.png?branch=master)](https://travis-ci.org/mtulio/puppet-mod-profiles)
+
+
 #### Table of Contents
 
 1. [Overview](#1-overview)
